@@ -1,0 +1,16 @@
+{
+  "questions": [
+    {
+      "questionText": "Question 1",
+      "answers": [
+        "Первый",
+        "Второй",
+        "Третий",
+        "Четвёртый"
+      ],
+      "correct": 0,
+      "id": 1,
+      "usage": true
+    }
+  ]
+}
