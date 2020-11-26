@@ -1,5 +1,7 @@
 # telega-quiz
 
+Simple quiz generator for my telegram bot
+
 ## Project setup
 ```
 npm install
