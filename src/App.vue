@@ -6,7 +6,11 @@
       <div class="circle"></div>
       <div class="form-inner">
         Вопрос<input type="text" name="questionText" v-model="questionText" />
-        Ответы<textarea name="answer" v-model="answers" style="height: 350px" />
+        Ответы<textarea
+          name="answers"
+          v-model="answers"
+          style="height: 350px"
+        />
         Верный ответ<input type="text" name="correct" v-model="correct" />
         <input
           type="submit"
@@ -31,17 +35,26 @@ export default {
   }),
 
   methods: {
-    onSubmit() {
+    async onSubmit() {
       if (!this.exist) {
-        axios.post("http://localhost:1234/questions", {
-          questionText: this.questionText,
-          answers: this.answers.split(","),
-          correct: this.correct - 1,
+        let formData = new FormData();
+        formData.append("questionText", this.questionText);
+        formData.append("answers", this.answers.split(";"));
+        formData.append("correct", this.correct);
+        formData.append("used", 0);
+
+        const res = await fetch("http://directquiz.ru/questions", {
+          method: "POST",
+          body: formData,
         });
+
+        const data = await res.json();
+
+        console.log(data);
 
         this.questions.push({
           questionText: this.questionText,
-          answers: this.answers.split(","),
+          answers: this.answers,
           correct: this.correct - 1,
         });
 
@@ -69,7 +82,7 @@ export default {
 
   mounted() {
     this.questions = axios
-      .get("http://localhost:1234/questions")
+      .get("http://directquiz.ru/questions")
       .then((res) => (this.questions = res.data));
   },
 };
@@ -83,7 +96,8 @@ body {
   background: #f69a73;
 }
 
-input, textarea {
+input,
+textarea {
   outline: none;
 }
 
